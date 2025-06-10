@@ -23,7 +23,7 @@ from metaworld.envs import (ALL_V2_ENVIRONMENTS_GOAL_OBSERVABLE,
 
 def env_constructor(env_name, device='cuda', image_width=256, image_height=256,
                     camera_name=None, embedding_name='resnet50', pixel_based=True,
-                    render_gpu_id=0, load_path="", proprio=False, lang_cond=False, gc=False):
+                    render_gpu_id=0, load_path="", proprio=False, lang_cond=False, gc=False, ckpt_pth=None):
 
     ## If pixel based will wrap in a pixel observation wrapper
     if pixel_based:
