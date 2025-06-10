@@ -16,11 +16,6 @@ import os
 from collections import namedtuple
 
 
-import metaworld
-from metaworld.envs import (ALL_V2_ENVIRONMENTS_GOAL_OBSERVABLE,
-                            ALL_V2_ENVIRONMENTS_GOAL_HIDDEN)
-
-
 def env_constructor(env_name, device='cuda', image_width=256, image_height=256,
                     camera_name=None, embedding_name='resnet50', pixel_based=True,
                     render_gpu_id=0, load_path="", proprio=False, lang_cond=False, gc=False, ckpt_pth=None):
@@ -28,14 +23,7 @@ def env_constructor(env_name, device='cuda', image_width=256, image_height=256,
     ## If pixel based will wrap in a pixel observation wrapper
     if pixel_based:
         ## Need to do some special environment config for the metaworld environments
-        if "v2" in env_name:
-            e  = ALL_V2_ENVIRONMENTS_GOAL_OBSERVABLE[env_name]()
-            e._freeze_rand_vec = False
-            e.spec = namedtuple('spec', ['id', 'max_episode_steps'])
-            e.spec.id = env_name
-            e.spec.max_episode_steps = 500
-        else:
-            e = gym.make(env_name)
+        e = gym.make(env_name)
         ## Wrap in pixel observation wrapper
         e = MuJoCoPixelObs(e, width=image_width, height=image_height, 
                            camera_name=camera_name, device_id=render_gpu_id)

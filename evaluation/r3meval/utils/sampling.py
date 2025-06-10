@@ -13,10 +13,6 @@ logging.disable(logging.CRITICAL)
 import gc
 from collections import namedtuple
 
-from metaworld.envs import (ALL_V2_ENVIRONMENTS_GOAL_OBSERVABLE,
-                            ALL_V2_ENVIRONMENTS_GOAL_HIDDEN)
-
-
 # Single core rollout to sample trajectories
 # =======================================================
 def do_rollout(
@@ -42,18 +38,7 @@ def do_rollout(
     print("Evaluating")
     if type(env) == str:
         ## MetaWorld specific stuff
-        if "v2" in env:
-            env_name = env
-            env = ALL_V2_ENVIRONMENTS_GOAL_OBSERVABLE[env_name]()
-            env._freeze_rand_vec =False
-            env.horizon = 500
-            env.spec = namedtuple('spec', ['id', 'max_episode_steps', 'observation_dim', 'action_dim'])
-            env.spec.id = env_name
-            env.spec.observation_dim = int(env.observation_space.shape[0])
-            env.spec.action_dim = int(env.action_space.shape[0])
-            env.spec.max_episode_steps = 500
-        else:
-            env = GymEnv(env)
+        env = GymEnv(env)
     elif isinstance(env, GymEnv):
         env = env
     elif callable(env):
