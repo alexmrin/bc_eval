@@ -84,7 +84,7 @@ def bc_train_loop(job_data:dict) -> None:
 
     # Infers the location of the demos
     ## V2 is metaworld, V0 adroit, V3 kitchen
-    data_dir = '/content/'
+    data_dir = '/content/bc_data_clean/'
     if "v2" in job_data['env_kwargs']['env_name']:
         demo_paths_loc = data_dir + 'final_paths_multiview_meta_200/' + job_data['camera'] + '/' + job_data['env_kwargs']['env_name'] + '.pickle'
     elif "v0" in job_data['env_kwargs']['env_name']:
