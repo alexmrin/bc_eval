@@ -10,7 +10,8 @@ from r3meval.utils.gaussian_mlp import MLP
 from r3meval.utils.behavior_cloning import BC
 from tabulate import tabulate
 from tqdm import tqdm
-import mj_envs, gym 
+import robohive
+import gymnasium as gym 
 import numpy as np, time as timer, multiprocessing, pickle, os
 import os
 from collections import namedtuple
@@ -29,7 +30,7 @@ def env_constructor(env_name, device='cuda', image_width=256, image_height=256,
                            camera_name=camera_name, device_id=render_gpu_id)
         ## Wrapper which encodes state in pretrained model
         e = StateEmbedding(e, embedding_name=embedding_name, device=device, load_path=load_path, 
-                        proprio=proprio, camera_name=camera_name, env_name=env_name)
+                        proprio=proprio, camera_name=camera_name, env_name=env_name, ckpt_pth=ckpt_pth)
         e = GymEnv(e)
     else:
         print("Only supports pixel based")
@@ -90,7 +91,7 @@ def bc_train_loop(job_data:dict) -> None:
     elif "v0" in job_data['env_kwargs']['env_name']:
         demo_paths_loc = data_dir + 'final_paths_multiview_adroit_200/' + job_data['camera'] + '/' + job_data['env_kwargs']['env_name'] + '.pickle'
     else:
-        demo_paths_loc = data_dir + 'final_paths_multiview_rb_200/' + job_data['camera'] + '/' + job_data['env_kwargs']['env_name'] + '.pickle'
+        demo_paths_loc = data_dir + 'final_paths_multiview_rb_200/' + job_data['camera'] + '/' + "kitchen_sdoor_open-v3" + '.pickle'
 
     ## Loads the demos
     demo_paths = pickle.load(open(demo_paths_loc, 'rb'))

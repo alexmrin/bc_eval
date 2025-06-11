@@ -3,8 +3,8 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 import numpy as np
-import gym
-from gym.spaces.box import Box
+import gymnasium as gym
+from gymnasium.spaces import Box
 import omegaconf
 import torch
 import torch.nn as nn
@@ -341,7 +341,10 @@ class StateEmbedding(gym.ObservationWrapper):
 
         self.embedding, self.embedding_dim = embedding, embedding_dim
         self.observation_space = Box(
-                    low=-np.inf, high=np.inf, shape=(self.embedding_dim+self.proprio,))
+            low=-np.inf, high=np.inf,
+            shape=(self.embedding_dim + self.proprio,),
+            dtype=np.float32,
+        )
 
     def observation(self, observation):
         ### INPUT SHOULD BE [0,255]
